@@ -17,6 +17,8 @@ export class AuthController {
         return this.authService.register(registerDto);
     }
 
+    @ApiOperation({ summary: 'Авторизация пользователя' })
+    @ApiResponse({ status: 200, type: User })
     @Post('login')
     async login(@Body() loginDto: LoginDto) {
         return this.authService.login(loginDto);
