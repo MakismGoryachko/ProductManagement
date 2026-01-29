@@ -10,7 +10,7 @@ import { User } from 'src/users/dto/user.dto';
 export class AuthController {
     constructor(private authService: AuthService) { }
 
-    @ApiOperation({ summary: 'Создание пользователя' })
+    @ApiOperation({ summary: 'Регистрация пользователя' })
     @ApiResponse({ status: 200, type: User })
     @Post('register')
     async register(@Body() registerDto: RegisterDto) {
