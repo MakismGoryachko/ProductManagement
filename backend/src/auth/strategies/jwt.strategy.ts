@@ -1,27 +1,29 @@
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { UsersService } from '../../users/users.service';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private configService: ConfigService,
-    private usersService: UsersService,
-  ) {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: configService.get('JWT_SECRET')!,
-    });
-  }
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+    constructor(private configService: ConfigService) {
 
-  async validate(payload: any) {
-    const user = await this.usersService.findByEmail(payload.email);
-    if (!user) {
-      throw new UnauthorizedException('Invalid token');
+        super({
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: process.env.JWT_SECRET || 's3cr3t',
+        });
     }
-    return { userId: payload.sub, email: payload.email, roles: [user.role] };
-  }
+
+    async validate(payload: any) {
+
+        if (!payload.sub) {
+            throw new UnauthorizedException('Invalid token payload');
+        }
+
+        return {
+            userId: payload.sub,
+            email: payload.email,
+            roles: payload.roles
+        };
+    }
 }
