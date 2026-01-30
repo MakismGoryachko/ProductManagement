@@ -1,0 +1,28 @@
+services:
+  main:
+    container_name: main
+    build:
+      context: .
+    env_file:
+      - .development.env
+    volumes:
+      - .:/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    restart: always
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: productdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -8,7 +8,7 @@ import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
-    envFilePath: '.development.env',
+    //envFilePath: '.development.env',
     isGlobal: true,
   }),
     AuthModule,
