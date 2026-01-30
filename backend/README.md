@@ -29,9 +29,9 @@ docker-compose up --build
 
 bash
 docker-compose exec main npx prisma db push
+
 Откройте в браузере Swagger UI:
 
-text
 http://localhost:8080/api
 Основные возможности API
 JWT аутентификация + роли ADMIN/USER
@@ -47,7 +47,7 @@ Swagger с Bearer токенами
 Hot reload в Docker dev
 
 Архитектура
-text
+
 Модули NestJS: Auth, Users, Products
 Guards: JwtAuthGuard → RolesGuard (JWT → Роли)
 Prisma: User {roles: Json["ADMIN"]} → Product{createdById}
